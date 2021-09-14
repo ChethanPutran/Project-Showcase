@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
 
 mongoose.connect(
-	process.env.DATABASE_URI,
+	process.env.DB_URL,
 	{
 		useNewUrlParser: true,
-		useCreateIndex: true,
 		useUnifiedTopology: true,
-		useFindAndModify: false,
 		autoIndex: true,
 	},
 	(error) => {
 		if (error) {
-			return console.log('Unable to connect to database!');
+			return console.log('Unable to connect to database!', error);
 		}
 		console.log('Database connection successful!');
 	}
