@@ -1,0 +1,103 @@
+/***************Todo********************/
+.todo {
+	padding: 1rem 0;
+	border-bottom: 0.1rem solid rgb(133, 127, 127);
+	display: flex;
+	text-align: left;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	align-items: center;
+}
+
+.todo__header {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.todo__header--top {
+	display: flex;
+	justify-content: space-between;
+}
+
+.status__label {
+	font-size: 1.2rem;
+	font-weight: 300;
+	margin-bottom: 1rem;
+	padding: 0.3rem;
+	border-radius: 0.2rem;
+	color: #fff;
+	position: relative;
+	align-self: flex-end;
+}
+
+.status__complete {
+	background: rgb(0, 173, 38);
+}
+.status__incomplete {
+	background: rgb(255, 30, 0);
+}
+
+.status__label.status__complete::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -0.5rem;
+	border-width: 0.5rem;
+	border-style: solid;
+	border-color: rgb(0, 173, 38) transparent transparent transparent;
+}
+.status__label.status__incomplete::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -0.5rem;
+	border-width: 0.5rem;
+	border-style: solid;
+	border-color: rgb(255, 30, 0) transparent transparent transparent;
+}
+.todo__title {
+	font-size: 1.6rem;
+	text-transform: capitalize;
+	margin-bottom: 0.7rem;
+	font-weight: 600;
+}
+.todo__date {
+	font-size: 1rem;
+	text-align: end;
+	margin-left: 2rem;
+}
+.todo__description {
+	font-size: 1.4rem;
+	font-family: sans-serif;
+	font-style: italic;
+	margin-bottom: 0.6rem;
+	color: #8a2b06 !important;
+}
+.todo__status {
+	font-size: 1.6rem;
+	color: #8a2b06;
+	display: inline-flex;
+	gap: 1rem;
+}
+
+.todo__btnBox {
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+.todo__btn {
+	font-size: 1.4rem !important;
+	padding: 0.5rem 2rem;
+}
+.todo__btn:not(:last-of-type) {
+	margin-right: 1rem;
+}
+
+.btnIcon {
+	color: #fff;
+}

@@ -1,0 +1,62 @@
+.nav {
+	padding: 2rem 5rem;
+	background: rgba(0, 0, 0, 0.7);
+	width: 100%;
+	height: 15vh;
+	color: #ffffff;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 3rem;
+	box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.5);
+	z-index: 10;
+}
+.nav__list {
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+}
+.nav__item {
+	padding: 1rem;
+	color: #fff;
+}
+.nav__item:not(:last-child) {
+	margin-right: 3rem;
+}
+.nav__link {
+	color: #fff;
+	font-size: 2rem;
+	padding-bottom: 1rem;
+	text-decoration: none;
+	transition: all 0.1s;
+	border: none;
+	border-bottom: 0.4rem solid transparent;
+	background: none;
+}
+
+.nav__link:hover {
+	border-bottom: 0.4rem solid #ce4008;
+}
+
+.nav__link__active {
+	color: #ce4008;
+	border-bottom: 0.4rem solid #ce4008;
+}
+.nav__logoName {
+	font-size: 3.2rem;
+	margin-left: 3rem;
+}
+.nav__todoBtn__content {
+	font-size: 2rem;
+	margin-right: 1rem;
+}
+.nav__todoBtn__itemNum {
+	display: inline-block;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	text-align: center;
+	background: #c91a02;
+	line-height: 3rem;
+	color: #fff;
+}

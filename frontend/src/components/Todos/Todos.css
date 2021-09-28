@@ -1,0 +1,108 @@
+/****************** Generals ************************/
+.posCenter {
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 70rem;
+	margin: 0 auto;
+}
+.txtCenter {
+	text-align: center;
+}
+
+/**************** Todo-Form***************************/
+
+.todosSummary {
+	display: block;
+	color: #fff;
+	font-size: 1.6rem;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.todosSummary__title {
+	font-size: 2.2rem;
+	margin-bottom: 2rem;
+	letter-spacing: 0.13rem;
+	padding-bottom: 2rem;
+	border-bottom: 0.1rem solid #eee;
+}
+
+.todosSummary__description {
+	font-size: 1.6rem;
+	color: #ce4008;
+	letter-spacing: 0.11rem;
+}
+/******************* todo Form *****************************/
+.todo__form {
+	display: flex;
+}
+.todo__form__quantity {
+	flex-basis: 50%;
+}
+.todo__quantity {
+	font-size: 1.6rem;
+	font-weight: 700;
+}
+.todo__form__buttons {
+	flex-basis: 50%;
+}
+.todo__quantity {
+	display: block;
+	text-align: center;
+	padding: 1rem 0;
+}
+.todo__quantityBtns {
+	text-align: center;
+	font-size: 1.6rem;
+	font-weight: 700;
+}
+.todo__quantityInputBtn {
+	display: inline-block;
+	width: 3.5rem;
+	height: 3.5rem;
+	font-size: 2rem;
+	font-weight: 400;
+}
+.todo__quantityInputBtn:not(:last-child) {
+	margin-right: 1rem;
+}
+.todo__cartBtn {
+	width: 100%;
+	background: #8a2b06;
+	color: #fff;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+.todo__cartBtn:hover {
+	background: #641e03;
+}
+.todo__quantityBtn {
+}
+.todo__wishlistBtn {
+	width: 100%;
+	padding: 1rem;
+	background: orange;
+	color: #fff;
+}
+.todo__wishlistBtn:hover {
+	background: rgb(247, 135, 8);
+	color: #fff;
+}
+.todo__contentBox {
+	flex-basis: 50%;
+	flex-grow: 1;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+.todo__formBox {
+	flex-basis: 50%;
+	padding: 2rem 0;
+}
+.todo__todoBox {
+	flex-basis: 50%;
+	padding: 2rem 0 2rem 2.5rem;
+}

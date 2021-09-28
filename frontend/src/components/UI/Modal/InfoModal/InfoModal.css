@@ -1,0 +1,35 @@
+.infoModal {
+	border-radius: 1rem;
+	max-width: 40rem;
+}
+.infoModal__header {
+	background: purple;
+	color: #ffffff;
+}
+.infoModal__title {
+	font-size: 2.2rem;
+	padding: 2rem;
+}
+.infoModal__content {
+	padding: 2rem;
+}
+.infoModal__message {
+	font-size: 1.6rem;
+}
+.infoModal__footer {
+	text-align: end;
+	padding: 0 2rem 2rem 0;
+	overflow: hidden;
+}
+.infoModal__button {
+	background: purple;
+	border: none !important;
+	transform: none !important;
+}
+.infoModal__button:first-of-type {
+	margin-right: 2rem;
+}
+.infoModal__button:hover {
+	background: rgb(82, 1, 82);
+	color: white;
+}

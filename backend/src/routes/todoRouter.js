@@ -1,5 +1,6 @@
 const express = require('express');
 const Todo = require('../db/modals/todo');
+const User = require('../db/modals/user');
 const { ObjectId } = require('mongodb');
 
 const { isValid } = require('../utils/objHandler');
@@ -7,13 +8,23 @@ const authenticate = require('../services/auth/authenticate');
 
 router = new express.Router();
 
-router.post('/user/todos', authenticate, async (req, res) => {
+router.post('/todo', authenticate, async (req, res) => {
 	try {
 		const todo = await Todo.create({ ...req.body, owner: req.user._id });
 		res.status(200).send({ status: 'success', data: { todo } });
 	} catch (err) {
-		res.status(400).send({ status: 'failure', error: err });
-		console.log('Error', err);
+		const keys = ['description', 'title', 'completed'];
+		const errorKey = Object.keys(err.errors).filter((item) =>
+			keys.includes(item)
+		);
+		const message = err.message.includes('E11000')
+			? 'Title has been used!'
+			: err.errors[errorKey].message;
+
+		res.status(400).send({
+			status: 'failure',
+			error: { type: err.errors[errorKey].name, message },
+		});
 	}
 });
 
@@ -23,7 +34,10 @@ router.post('/user/todos', authenticate, async (req, res) => {
 //GET /todos?sortBy=createdAt_asc
 //GET /todos?sortBy=createdAt_desc
 
-router.get('/user/todos', authenticate, async (req, res) => {
+//Appending items to array
+
+router.get('/todos', authenticate, async (req, res) => {
+	console.log('new get todos');
 	try {
 		const match = {};
 		const sort = {};
@@ -33,9 +47,8 @@ router.get('/user/todos', authenticate, async (req, res) => {
 			const parts = req.query.sortBy.split('_');
 			sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
 		}
-		console.log(sort);
-		// const todos = await Todo.find({ owner: req.user._id });
-		await req.user
+
+		const user = await User.findById(req.user._id)
 			.populate({
 				path: 'todos',
 				match,
@@ -45,19 +58,24 @@ router.get('/user/todos', authenticate, async (req, res) => {
 					sort,
 				},
 			})
-			.execPopulate();
-		if (req.user.todos.length > 0) {
-			return res.status(200).send(req.user.todos);
+			.exec();
+
+		if (user.todos.length > 0) {
+			return res.status(200).send({ status: 'sucess', data: user.todos });
 		}
-		res.status(400).send({ error: 'No todo found!' });
+		res.status(400).send({
+			error: { message: 'No todo found!' },
+			status: 'failure',
+		});
 	} catch (err) {
+		console.log(err);
 		res.status(500).send({
-			error: 'Unexpexted Error!',
-			reason: err.message,
+			status: 'failure',
+			error: err.message,
 		});
 	}
 });
-router.get('/user/todos/:id', authenticate, async (req, res) => {
+router.get('/todo/:id', authenticate, async (req, res) => {
 	try {
 		const id = new ObjectId(req.params.id);
 
@@ -68,36 +86,79 @@ router.get('/user/todos/:id', authenticate, async (req, res) => {
 		const owner = todo.owner;
 
 		if (todo) {
-			res.status(200).send({ todo });
+			res.status(200).send({ status: 'sucess', data: todo });
 		} else {
-			res.status(400).json({ error: 'No user found' });
+			res.status(400).json({
+				error: { message: 'No user found' },
+				status: 'failure',
+			});
 		}
 	} catch (err) {
-		res.status(400).send({ error: 'Invalid Id!' });
+		res.status(400).send({
+			error: { message: 'Invalid Id!' },
+			status: 'failure',
+		});
+	}
+});
+router.patch('/todo', authenticate, async (req, res) => {
+	try {
+		const id = req.query.id;
+		const completed = req.query.completed;
+
+		const todo = await Todo.updateOne(
+			{ _id: id, owner: req.user._id },
+			{ completed },
+			{ runValidators: true }
+		);
+
+		if (todo) {
+			res.status(200).send({ status: 'sucess', data: todo });
+		} else {
+			res.status(400).json({
+				error: { message: 'Invalid Id!' },
+				status: 'failure',
+			});
+		}
+	} catch (err) {
+		console.log(err);
+		res.status(400).send({
+			error: { message: err.message },
+			status: 'failure',
+		});
 	}
 });
 
-router.patch('/user/todo/:id', authenticate, async (req, res) => {
+router.patch('/todo/:id', authenticate, async (req, res) => {
 	try {
 		const id = req.params.id;
+		const data = req.body;
 
 		if (!isValid(Todo.schema.obj, data)) {
 			throw new Error('Please provide a valid data');
 		}
 		const todo = await Todo.findOne({ _id: id, owner: req.user._id });
-		Object.keys(data).forEach((key_) => (todo[key_] = req.body[key_]));
+
+		Object.keys(data).forEach((key_) => {
+			todo[key_] = req.body[key_];
+		});
 		await todo.save();
 
 		if (!todo) {
-			return res.status(404).send('No todo found!');
+			return res.status(404).send({
+				status: 'failure',
+				error: { message: 'No todo found!' },
+			});
 		}
-		res.status(200).send(todo);
+		res.status(200).send({ status: 'sucess', data: todo });
 	} catch (err) {
-		res.status(400).json({ error: err.message });
+		res.status(400).json({
+			error: { message: err.message },
+			status: 'failure',
+		});
 	}
 });
 
-router.delete('/user/todos/:id', authenticate, async (req, res) => {
+router.delete('/todo/:id', authenticate, async (req, res) => {
 	try {
 		const id = req.params.id;
 
@@ -106,12 +167,18 @@ router.delete('/user/todos/:id', authenticate, async (req, res) => {
 			owner: req.user._id,
 		});
 		if (todo) {
-			res.status(200).send('Todo has been removed!');
+			res.status(200).send({
+				status: 'sucess',
+				data: { message: 'Todo has been removed!' },
+			});
 		} else {
 			throw new Error('No todo found!');
 		}
 	} catch (err) {
-		res.status(400).json({ error: err.message });
+		res.status(400).json({
+			error: { message: err.message },
+			status: 'failure',
+		});
 	}
 });
 

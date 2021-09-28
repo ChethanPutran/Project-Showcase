@@ -13,10 +13,11 @@ passport.serializeUser(function (user, done) {
 	}
 });
 
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		done(null, user);
+passport.deserializeUser(async (id, done) => {
+	const user = await User.findOne({
+		_id: id,
 	});
+	done(null, user);
 });
 
 passport.use(
@@ -36,7 +37,9 @@ passport.use(
 					try {
 						const newUser = {
 							g_id: `${profile.id}`,
-							name: `${profile.given_name} ${profile.family_name}`,
+							name: `${profile.given_name} ${
+								profile.family_name ? profile.family_name : ''
+							}`,
 							email: profile.email,
 							avatar: {
 								name: `${profile.given_name}.png`,

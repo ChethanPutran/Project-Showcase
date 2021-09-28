@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const jwt = require('jsonwebtoken');
-
-const Todo = require('./todo');
-const authToken = process.env.AUTH_TOKEN;
 
 const userSchema = new mongoose.Schema(
 	{
@@ -11,7 +7,7 @@ const userSchema = new mongoose.Schema(
 		g_id: { type: String, required: true },
 		email: {
 			type: String,
-			unique: true,
+			unique: [true, 'Email has been taken'],
 			required: true,
 			validate(email) {
 				if (!validator.isEmail(email)) {
@@ -19,14 +15,6 @@ const userSchema = new mongoose.Schema(
 				}
 			},
 		},
-
-		tokens: [
-			{
-				token: {
-					type: String,
-				},
-			},
-		],
 		avatar: {
 			uploadedAt: {
 				type: Date,
@@ -42,12 +30,21 @@ const userSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-//Connecting Todo with User
+//Connecting User with todo
 userSchema.virtual('todos', {
 	ref: 'Todo',
 	localField: '_id',
 	foreignField: 'owner',
 });
 
+userSchema.pre('save', function (next) {
+	this.validate()
+		.then(() => {
+			next();
+		})
+		.catch((err) => {
+			throw err;
+		});
+});
 const User = mongoose.model('User', userSchema);
 module.exports = User;

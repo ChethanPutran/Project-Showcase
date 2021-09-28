@@ -1,0 +1,46 @@
+.snackbar {
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 0.5rem;
+	color: #fff;
+	position: fixed;
+	top: 6rem;
+	left: 50%;
+	font-size: 1.6rem;
+	padding: 1rem;
+	animation: moveDown 1.5s, stay 4s 1.5s, moveUp 1.2s 5.5s;
+	transform: translateX(-50%);
+	opacity: 0;
+	white-space: pre-wrap;
+	text-align: center;
+}
+@keyframes moveUp {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -10rem);
+	}
+}
+@keyframes stay {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+}
+
+@keyframes moveDown {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -10rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+}
