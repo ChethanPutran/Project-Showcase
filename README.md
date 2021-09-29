@@ -6,12 +6,12 @@
 
 #########################################
 
-PORT=3004
-DB_URL="mongodb://localhost:27017/Todo"
-SESSION_KEY={ANY STRING OF YOUR CHOICE}
-SESSION_SCRT={ANY STRING OF YOUR CHOICE}
-GOOGLE_OAUTH2_CLIENT_ID={YOUR_GOOGLE_OAUTH_ID}
-GOOGLE_OAUTH2_CLIENT_SECRET={YOUR_GOOGLE_OAUTH_SECRET}
+PORT=3004\n
+DB_URL="mongodb://localhost:27017/Todo"\n
+SESSION_KEY={ANY STRING OF YOUR CHOICE}\n
+SESSION_SCRT={ANY STRING OF YOUR CHOICE}\n
+GOOGLE_OAUTH2_CLIENT_ID={YOUR_GOOGLE_OAUTH_ID}\n
+GOOGLE_OAUTH2_CLIENT_SECRET={YOUR_GOOGLE_OAUTH_SECRET}\n
 ###########################################
 
 -->>Navigate to "backend" directory and run the following command to start backend-server
