@@ -17,6 +17,7 @@ const sortTodos = (todos, type) => {
 const TodosList = (props) => {
 	const history = useHistory();
 	const location = useLocation();
+
 	const [filteredTodos, setFilteredTodos] = useState(props.todos);
 
 	const queryParams = new URLSearchParams(location.search);
@@ -34,19 +35,19 @@ const TodosList = (props) => {
 		});
 	};
 
-	const todoList = sortedTodos.map((todo) => (
-		<li className='todos__list--item' key={todo._id} id={todo._id}>
-			{console.log(todo)}
-			<Todo
-				id={todo._id}
-				title={todo.title}
-				description={todo.description}
-				completed={todo.completed}
-				onChangeTodo={props.onChangeTodo}
-				createdAt={todo.createdAt}
-			/>
-		</li>
-	));
+	const todoList = () =>
+		sortedTodos.map((todo) => (
+			<li className='todos__list--item' key={todo._id} id={todo._id}>
+				<Todo
+					id={todo._id}
+					title={todo.title}
+					description={todo.description}
+					completed={todo.completed}
+					createdAt={todo.createdAt}
+				/>
+			</li>
+		));
+
 	const sortHandler = () => {
 		history.push({
 			pathname: `${location.pathname}`,
@@ -74,7 +75,7 @@ const TodosList = (props) => {
 						/>
 					</div>
 				</div>
-				<ul className='todos__list'>{todoList}</ul>
+				<ul className='todos__list'>{todoList()}</ul>
 			</Card>
 		</section>
 	);

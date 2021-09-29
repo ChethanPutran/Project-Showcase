@@ -7,6 +7,8 @@ import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import { useHistory } from 'react-router';
 import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
+import { useDispatch } from 'react-redux';
+import updateTodos from '../../../store/index';
 
 const Todo = (props) => {
 	const todo = {
@@ -14,6 +16,8 @@ const Todo = (props) => {
 		description: props.description,
 		completed: props.completed,
 	};
+
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const [confirmation, setConfirmation] = useState(false);
 	const clearConfirmation = () => {
@@ -55,7 +59,7 @@ const Todo = (props) => {
 		[changeStatus]
 	);
 	if (status === 'sucess' || deleteStatus === 'sucess') {
-		props.onChangeTodo();
+		dispatch(updateTodos());
 	}
 	const date = new Date(props.createdAt);
 	const createdAt =
@@ -140,4 +144,4 @@ const Todo = (props) => {
 	);
 };
 
-export default React.memo(Todo);
+export default Todo;

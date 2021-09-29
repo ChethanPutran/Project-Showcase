@@ -4,10 +4,13 @@ import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import useHttp from '../../hooks/use-http';
 import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import updateTodos from '../../../store/index';
 
 export default function EditTodo(props) {
 	const location = useLocation();
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const httpService = new HttpService();
 	const { sendRequest, status, error } = useHttp(httpService.updateTodo);
@@ -29,6 +32,7 @@ export default function EditTodo(props) {
 	}
 
 	if (status === 'sucess') {
+		dispatch(updateTodos());
 		history.push('/todos');
 	}
 

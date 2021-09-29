@@ -7,21 +7,32 @@ import AddTodo from './components/Todos/AddTodo/AddTodo';
 import Todos from './components/Todos/Todos';
 import NotFound from './components/NotFound/NotFound';
 import Login from './components/Login/Login';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from './store/auth-context';
 import LoadingSpinner from './components/UI/LoadingSpinner/LoadingSpinner';
 import EditTodo from './components/Todos/EditTodo/EditTodo';
+import { useDispatch } from 'react-redux';
+import getTodos from './store';
+import { useSelector } from 'react-redux';
 
 function App() {
-	let sizeHandler;
+	const dispatch = useDispatch();
 	const authContext = useContext(AuthContext);
 
-	const setTodosSizeHandler = (size) => {
-		sizeHandler(size);
-	};
-	const onSizeChangeHandler = (setSize) => {
-		sizeHandler = setSize;
-	};
+	useEffect(() => {
+		dispatch(getTodos());
+	}, [dispatch]);
+
+	const data = useSelector((state) => state.todos);
+	const error = useSelector((state) => state.error);
+	const status = useSelector((state) => state.status);
+	if (status === 'pending') {
+		return (
+			<div className='loading dark'>
+				<LoadingSpinner />
+			</div>
+		);
+	}
 
 	return (
 		<div className='App'>
@@ -30,7 +41,7 @@ function App() {
 					<LoadingSpinner />
 				</div>
 			)}
-			<Navigation onSizeChange={onSizeChangeHandler} />
+			<Navigation />
 			<Switch>
 				<Route path='/' exact>
 					<Redirect to='/home/' />
@@ -42,7 +53,11 @@ function App() {
 				{authContext.user && (
 					<>
 						<Route path='/todos' exact>
-							<Todos setTodosSize={setTodosSizeHandler} />
+							<Todos
+								todos={[...data]}
+								error={error}
+								status={status}
+							/>
 						</Route>
 						<Route path='/addTodo'>
 							<AddTodo />

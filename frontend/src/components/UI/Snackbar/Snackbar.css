@@ -7,40 +7,37 @@
 	left: 50%;
 	font-size: 1.6rem;
 	padding: 1rem;
-	animation: moveDown 1.5s, stay 4s 1.5s, moveUp 1.2s 5.5s;
 	transform: translateX(-50%);
-	opacity: 0;
 	white-space: pre-wrap;
 	text-align: center;
+	transition: all 0.5s;
+	opacity: 0;
+	z-index: 999;
+	animation: moveIn 6s, moveOut 1.5s ease-in-out 6s;
 }
-@keyframes moveUp {
+
+@keyframes moveIn {
 	0% {
-		opacity: 1;
-		transform: translate(-50%, -50%);
-	}
-	100% {
 		opacity: 0;
-		transform: translate(-50%, -10rem);
+		transform: translate(-50%, -8rem);
 	}
-}
-@keyframes stay {
-	0% {
+	20% {
 		opacity: 1;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, 0);
 	}
 	100% {
 		opacity: 1;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, 0);
 	}
 }
 
-@keyframes moveDown {
+@keyframes moveOut {
 	0% {
-		opacity: 0;
-		transform: translate(-50%, -10rem);
+		opacity: 1;
+		transform: translate(-50%, 0);
 	}
 	100% {
-		opacity: 1;
-		transform: translate(-50%, -50%);
+		opacity: 0;
+		transform: translate(-50%, -8rem);
 	}
 }

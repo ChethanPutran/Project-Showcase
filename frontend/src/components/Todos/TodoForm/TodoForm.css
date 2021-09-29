@@ -78,13 +78,13 @@
 .form__button {
 	font-size: 1.8rem;
 	padding: 1rem 3rem;
-	background-color: orange;
 	margin-right: 3rem;
+	border: 0.2rem solid transparent;
 }
 .form__button:hover {
-	background-color: rgb(226, 111, 34);
-	border: 1px solid transparent;
-	color: white;
+	border: 0.2rem solid #12704c;
+	background: transparent;
+	color: #12704c;
 }
 .formCard {
 	transition: all 0.6s;

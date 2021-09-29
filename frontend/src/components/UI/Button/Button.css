@@ -11,10 +11,12 @@
 	font-size: 1.6rem;
 }
 .btn__primary {
-	background: orange;
+	background: #12865a;
+	/* background: orange; */
 }
 .btn__primary:hover {
-	background-color: rgb(255, 136, 0);
+	background-color: #12704c;
+	/* background-color: rgb(255, 136, 0); */
 }
 .btn:focus {
 	outline: none;

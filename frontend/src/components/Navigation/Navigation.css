@@ -10,6 +10,7 @@
 	padding: 0 3rem;
 	box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.5);
 	z-index: 10;
+	position: relative;
 }
 .nav__list {
 	list-style: none;
@@ -35,12 +36,15 @@
 }
 
 .nav__link:hover {
-	border-bottom: 0.4rem solid #ce4008;
+	border-bottom: 0.4rem solid #12865a;
+	/* border-bottom: 0.4rem solid #ce4008; */
 }
 
 .nav__link__active {
-	color: #ce4008;
-	border-bottom: 0.4rem solid #ce4008;
+	color: #12865a;
+	border-bottom: 0.4rem solid #12865a;
+	/* color: #ce4008;
+	border-bottom: 0.4rem solid #ce4008; */
 }
 .nav__logoName {
 	font-size: 3.2rem;

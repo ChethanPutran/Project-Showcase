@@ -4,7 +4,8 @@
 	overflow-y: auto;
 	font-size: 1.6rem;
 	width: 100%;
-	background: rgb(240, 192, 161);
+	background: rgb(0, 0, 0, 0.7);
+	/* background: rgb(240, 192, 161); */
 }
 .app__warning {
 	padding: 2rem;

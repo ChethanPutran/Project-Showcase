@@ -1,19 +1,19 @@
 import './Navigation.css';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../store/auth-context';
 import Snackbar from '../UI/Snackbar/Snackbar';
+import { useSelector } from 'react-redux';
+
 const Navigation = (props) => {
+	const size = useSelector((state) => state.size);
 	const authContext = useContext(AuthContext);
 	const logoutBtn = useRef();
 	const logoutHandler = () => {
 		logoutBtn.current.className = 'nav__link nav__link__active';
 		authContext.logout();
 	};
-
-	const [size, setSize] = useState(0);
-	props.onSizeChange(setSize);
 
 	return (
 		<>

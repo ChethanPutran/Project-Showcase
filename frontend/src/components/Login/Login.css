@@ -3,9 +3,13 @@
 	transition: all 0.5s;
 	box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
 	cursor: pointer;
+	background: transparent;
+	border-radius: 0;
+	outline: #12865a solid 0.4rem;
 }
 .loginCard:hover {
 	transform: translateY(-0.5rem);
+	outline: #12704c solid 0.4rem;
 }
 .loginBox {
 	width: 35rem;
@@ -26,12 +30,12 @@
 }
 .loginBox__textBox {
 	flex-grow: 1;
-	color: rgb(16, 172, 224);
+	color: #12865a;
 	transition: all 0.3s;
 }
 .loginBox__textBox:hover {
 	flex-grow: 1;
-	color: rgb(10, 99, 129);
+	color: #12704c;
 }
 .loginBox__text {
 	font-size: 2.2rem;
