@@ -1,25 +1,28 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../UI/Button/Button';
 import './Todo.css';
-import useHttp from '../../hooks/use-http';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import { useHistory } from 'react-router';
 import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
+
 import { useDispatch } from 'react-redux';
-import updateTodos from '../../../store/index';
+import { refresh_todos } from '../../../store/todo';
 
 const Todo = (props) => {
+	const dispatch = useDispatch();
 	const todo = {
 		title: props.title,
 		description: props.description,
 		completed: props.completed,
 	};
 
-	const dispatch = useDispatch();
 	const history = useHistory();
 	const [confirmation, setConfirmation] = useState(false);
+	const [message, setMessage] = useState({ type: null, message: null });
+	const [isLoading, setIsLoading] = useState(false);
+
 	const clearConfirmation = () => {
 		setConfirmation(false);
 	};
@@ -28,18 +31,39 @@ const Todo = (props) => {
 		clearConfirmation();
 		deleteTodo(props.id);
 	};
-	const httpService = new HttpService();
 
-	const {
-		sendRequest: deleteTodo,
-		status: deleteStatus,
-		error: deleteError,
-	} = useHttp(httpService.deleteTodo);
-	const {
-		sendRequest: changeStatus,
-		status,
-		error,
-	} = useHttp(httpService.updateTodoStatus);
+	const deleteTodo = async (id) => {
+		setIsLoading(true);
+		const httpService = new HttpService();
+		try {
+			const res = await httpService.deleteTodo(id);
+			console.log(res);
+			setMessage({ type: 'sucess', message: res.data.message });
+		} catch (err) {
+			console.log(err);
+			setMessage({ type: 'failure', message: err.message });
+		}
+		setIsLoading(false);
+		setTimeout(() => {
+			dispatch(refresh_todos());
+		}, 4000);
+	};
+	const updateTodoStatus = async (id) => {
+		console.log('update');
+		setIsLoading(true);
+		const httpService = new HttpService();
+		try {
+			const res = await httpService.updateTodoStatus(id);
+			setMessage({ type: 'sucess', message: res.data.message });
+		} catch (err) {
+			console.log(err);
+			setMessage({ type: 'failure', message: err.message });
+		}
+		setIsLoading(false);
+		setTimeout(() => {
+			dispatch(refresh_todos());
+		}, 2000);
+	};
 
 	const editTodoHandler = (id) => {
 		const search = `?id=${id}&&completed=${todo.completed}&&title=${todo.title}&&description=${todo.description}`;
@@ -49,18 +73,10 @@ const Todo = (props) => {
 		});
 	};
 
-	const deleteTodoHandler = (id) => {
+	const deleteTodoHandler = () => {
 		setConfirmation(true);
 	};
-	const changeTodoStatusHandler = useCallback(
-		({ id, completed }) => {
-			changeStatus({ id, completed });
-		},
-		[changeStatus]
-	);
-	if (status === 'sucess' || deleteStatus === 'sucess') {
-		dispatch(updateTodos());
-	}
+
 	const date = new Date(props.createdAt);
 	const createdAt =
 		date.toLocaleDateString('en-US') +
@@ -80,11 +96,17 @@ const Todo = (props) => {
 					onUndo={clearConfirmation}
 				/>
 			)}
-			{(deleteError || error) && <Snackbar />}
+
+			{message.message && (
+				<Snackbar content={message.message} type={message.type} />
+			)}
 			<div className='todo' title='Todo'>
-				{(deleteStatus === 'pending' || status === 'pending') && (
-					<LoadingSpinner />
+				{isLoading && (
+					<div className='loading'>
+						<LoadingSpinner size={'small'} />
+					</div>
 				)}
+				{}
 				<header className='todo__header'>
 					<div className='todo__header--top'>
 						<h3 className='todo__title' title='Todo title'>
@@ -117,10 +139,7 @@ const Todo = (props) => {
 									? 'Click to activate'
 									: 'Click to finish'
 							}
-							onClick={changeTodoStatusHandler.bind(null, {
-								id: props.id,
-								completed: !props.completed,
-							})}>
+							onClick={updateTodoStatus.bind(null, props.id)}>
 							{props.completed ? 'Activate' : 'Finish'}
 						</Button>
 					</div>

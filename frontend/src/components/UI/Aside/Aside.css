@@ -1,0 +1,58 @@
+.aside {
+    position: fixed;
+    top: 10vh;
+    right: 0;
+    padding: 1rem;
+    height: 100vh;
+    transition: all 0.3s;
+    background: #fff;
+    box-shadow: 4px 4px 2rem #00000066;
+}
+
+.show {
+    width: 40vw !important;
+    opacity: 1;
+    visibility: visible;
+}
+
+.hide {
+    width: 0 !important;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.top {
+    top: 10vh;
+    right: 0;
+}
+
+.hide.top {
+    transform: translateY(-100%);
+}
+
+.right {
+    top: 10vh;
+    right: 0;
+}
+
+.hide.right {
+    transform: translateX(100%);
+}
+
+.left {
+    top: 10vh;
+    left: 0;
+}
+
+.hide.bottom {
+    transform: translateY(100%);
+}
+
+.bottom {
+    bottom: 0;
+    left: 0;
+}
+
+.hide.left {
+    transform: translateX(-100%);
+}

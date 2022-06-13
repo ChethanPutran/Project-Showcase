@@ -1,32 +1,48 @@
-import { useHistory } from 'react-router-dom';
-import Snackbar from '../../UI/Snackbar/Snackbar';
 import TodoForm from '../TodoForm/TodoForm';
-import { useDispatch, useSelector } from 'react-redux';
-import updateTodos, { addTodo } from '../../../store/index';
+import HttpService from '../../Services/http-services';
+import Snackbar from '../../UI/Snackbar/Snackbar';
+import Aside from '../../UI/Aside/Aside';
+import { useDispatch } from 'react-redux';
+import { refresh_todos } from '../../../store/todo';
+import { useState } from 'react';
 
 const AddTodo = (props) => {
-	const history = useHistory();
-	const status = useSelector((state) => state.status);
-	const error = useSelector((state) => state.error);
+	const [isloading, setIsLoading] = useState(false);
+	const [message, setMessage] = useState({ status: null, message: null });
+
 	const dispatch = useDispatch();
 
-	if (status === 'sucess') {
-		history.push('/todos');
-		dispatch(updateTodos());
-	}
-	const sendRequest = (todo) => {
-		dispatch(addTodo(todo));
+	const addTodo = async (data) => {
+		setIsLoading(true);
+		const httpService = new HttpService();
+		try {
+			const res = await httpService.addTodo(data);
+			console.log(res);
+
+			setMessage((pre) => {
+				return {
+					status: 'sucess',
+					message: res.data.message,
+				};
+			});
+		} catch (err) {
+			setMessage((pre) => {
+				return { status: 'error', message: err.message };
+			});
+		}
+		setIsLoading(false);
+		setTimeout(() => {
+			dispatch(refresh_todos());
+		}, 2000);
 	};
 
 	return (
-		<>
-			{error && <Snackbar content={error.message} />}
-			<TodoForm
-				getData={sendRequest}
-				isLoading={status === 'pending'}
-				type='Add Todo'
-			/>
-		</>
+		<Aside position={'left'} className={props.className}>
+			{message.message && (
+				<Snackbar content={message.message} type={message.type} />
+			)}
+			<TodoForm getData={addTodo} isLoading={isloading} type='Add Todo' />
+		</Aside>
 	);
 };
 

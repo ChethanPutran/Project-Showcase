@@ -1,42 +1,39 @@
-.loginCard {
-	padding: 1rem;
-	transition: all 0.5s;
-	box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
-	cursor: pointer;
-	background: transparent;
-	border-radius: 0;
-	outline: #12865a solid 0.4rem;
-}
-.loginCard:hover {
-	transform: translateY(-0.5rem);
-	outline: #12704c solid 0.4rem;
-}
 .loginBox {
 	width: 35rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
+
+.loginBox:hover {
+	cursor: pointer;
+}
+
 .loginBox__imageBox {
 	width: 4rem;
 	height: 4rem;
 }
+
 .loginBox__imageBox:hover {
 	transform: rotate(7deg);
 }
+
 .loginBox__image {
 	width: 100%;
 	height: auto;
 }
+
 .loginBox__textBox {
 	flex-grow: 1;
 	color: #12865a;
 	transition: all 0.3s;
 }
+
 .loginBox__textBox:hover {
 	flex-grow: 1;
 	color: #12704c;
 }
+
 .loginBox__text {
 	font-size: 2.2rem;
 	text-align: center;

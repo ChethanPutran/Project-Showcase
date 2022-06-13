@@ -1,79 +1,70 @@
 import './Navigation.css';
-import { useContext, useRef } from 'react';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { AuthContext } from '../../store/auth-context';
-import Snackbar from '../UI/Snackbar/Snackbar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../store/auth';
 
 const Navigation = (props) => {
-	const size = useSelector((state) => state.size);
-	const authContext = useContext(AuthContext);
-	const logoutBtn = useRef();
+	const dispatch = useDispatch();
+	const size = useSelector((state) => state.todo.size);
 	const logoutHandler = () => {
-		logoutBtn.current.className = 'nav__link nav__link__active';
-		authContext.logout();
+		dispatch(logout());
+	};
+
+	const todoHandler = () => {
+		props.onClickTodos();
+	};
+	const addtodoHandler = () => {
+		props.onClickAddTodo();
+	};
+	const loginHandler = () => {
+		props.onClickLogin();
 	};
 
 	return (
 		<>
-			{authContext.error && <Snackbar content={authContext.error} />}
-
 			<nav className='nav' ref={props.cartBtn}>
-				<h1 className='nav__logoName'>Todo</h1>
+				<h1 className='nav__logoName'>
+					<span className='letter-left'>To</span>
+					<span className='letter-right'>do</span>
+				</h1>
 				<ul className='nav__list'>
-					<li className='nav__item'>
-						<NavLink
-							to='/home'
-							className='nav__link'
-							activeClassName='nav__link__active'>
-							Home
-						</NavLink>
-					</li>
-
-					{!authContext.user && (
+					{!props.is_authenticated && (
 						<li className='nav__item'>
-							<NavLink
-								to='/login'
+							<button
 								className='nav__link'
-								activeClassName='nav__link__active'>
+								onClick={loginHandler}>
 								Login
-							</NavLink>
+							</button>
 						</li>
 					)}
-					{authContext.user && (
+					{props.is_authenticated && (
 						<>
 							<li className='nav__item'>
-								<NavLink
-									to='/todos'
+								<button
 									className='nav__link'
-									activeClassName='nav__link__active'>
-									<span className='nav__todoBtn__content'>
-										Todo's
-									</span>
-									<span className='nav__todoBtn__itemNum'>
-										{size}
-									</span>
-								</NavLink>
+									onClick={todoHandler}>
+									Todos
+									{size > 0 && (
+										<span className='nav__todoBtn__itemNum'>
+											{size}
+										</span>
+									)}
+								</button>
 							</li>
 							<li className='nav__item'>
-								<NavLink
-									to='/addTodo'
+								<button
 									className='nav__link'
-									activeClassName='nav__link__active'>
+									onClick={addtodoHandler}>
 									Add Todo
-								</NavLink>
+								</button>
 							</li>
-							{authContext.user && (
-								<li className='nav__item'>
-									<button
-										className='nav__link'
-										ref={logoutBtn}
-										onClick={logoutHandler}>
-										Logout
-									</button>
-								</li>
-							)}
+							<li className='nav__item'>
+								<button
+									className='nav__link'
+									onClick={logoutHandler}>
+									Logout
+								</button>
+							</li>
 						</>
 					)}
 				</ul>

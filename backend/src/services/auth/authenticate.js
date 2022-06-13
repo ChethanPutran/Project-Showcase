@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
 	} catch (err) {
 		res.status(401).send({
 			status: 'failure',
-			error: 'You are not authenticated!',
+			error: { message: 'You are not authenticated!' },
 		});
 	}
 };

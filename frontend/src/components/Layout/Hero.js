@@ -1,30 +1,34 @@
 import './Hero.css';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../store/auth-context';
-import { useContext } from 'react';
-
+import { useSelector } from 'react-redux';
 const Hero = (props) => {
-	const authContext = useContext(AuthContext);
+	const user = useSelector((state) => state.auth.user);
+	const addTodoHandler = () => {
+		props.onClickAddTodo();
+	};
+	const loginHandler = () => {
+		props.onClickLogin();
+	};
 	return (
 		<>
 			<div className='hero'>
 				<div className='hero__decription'>
-					{authContext.user && `Welcome ${authContext.user.name}`}
-					{!authContext.user && 'Welcome to Todo'}
+					{user
+						? `Hello ${user.name},Welcome to Todo `
+						: 'Welcome to Todo'}
 				</div>
 				<div className='hero__btnBox centered'>
-					{authContext.user ? (
-						<Link
+					{user ? (
+						<button
 							className='btn btn__primary hero__btn'
-							to='/addTodo'>
+							onClick={addTodoHandler}>
 							Add Todo
-						</Link>
+						</button>
 					) : (
-						<Link
+						<button
 							className='btn btn__primary hero__btn'
-							to='/login'>
+							onClick={loginHandler}>
 							Login for more fun
-						</Link>
+						</button>
 					)}
 				</div>
 			</div>

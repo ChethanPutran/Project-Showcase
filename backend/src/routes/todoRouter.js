@@ -9,23 +9,32 @@ const authenticate = require('../services/auth/authenticate');
 router = new express.Router();
 
 router.post('/todo', authenticate, async (req, res) => {
-	try {
-		const todo = await Todo.create({ ...req.body, owner: req.user._id });
-		res.status(200).send({ status: 'success', data: { todo } });
-	} catch (err) {
-		const keys = ['description', 'title', 'completed'];
-		const errorKey = Object.keys(err.errors).filter((item) =>
-			keys.includes(item)
-		);
-		const message = err.message.includes('E11000')
-			? 'Title has been used!'
-			: err.errors[errorKey].message;
+	console.log('Create req');
+	setTimeout(async () => {
+		try {
+			const todo = await Todo.create({
+				...req.body,
+				owner: req.user._id,
+			});
+			res.status(200).send({
+				status: 'success',
+				data: { todo, message: 'Todo created sucessfully!' },
+			});
+		} catch (err) {
+			const keys = ['description', 'title', 'completed'];
+			const errorKey = Object.keys(err.errors).filter((item) =>
+				keys.includes(item)
+			);
+			const message = err.message.includes('E11000')
+				? 'Title has been used!'
+				: err.errors[errorKey].message;
 
-		res.status(400).send({
-			status: 'failure',
-			error: { type: err.errors[errorKey].name, message },
-		});
-	}
+			res.status(400).send({
+				status: 'failure',
+				error: { type: err.errors[errorKey].name, message },
+			});
+		}
+	}, 2000);
 });
 
 //Pagination
@@ -71,7 +80,7 @@ router.get('/todos', authenticate, async (req, res) => {
 		console.log(err);
 		res.status(500).send({
 			status: 'failure',
-			error: err.message,
+			error: { message: err.message },
 		});
 	}
 });
@@ -100,34 +109,31 @@ router.get('/todo/:id', authenticate, async (req, res) => {
 		});
 	}
 });
-router.patch('/todo', authenticate, async (req, res) => {
+router.patch('/todo/status', authenticate, async (req, res) => {
 	try {
 		const id = req.query.id;
-		const completed = req.query.completed;
 
-		const todo = await Todo.updateOne(
+		const todo = await Todo.findOne({ _id: id, owner: req.user._id });
+		if (!todo) {
+			throw new Error('No todo found!');
+		}
+		const updatedTodo = await Todo.updateOne(
 			{ _id: id, owner: req.user._id },
-			{ completed },
+			{ completed: !todo.completed },
 			{ runValidators: true }
 		);
 
-		if (todo) {
-			res.status(200).send({ status: 'sucess', data: todo });
-		} else {
-			res.status(400).json({
-				error: { message: 'Invalid Id!' },
-				status: 'failure',
-			});
-		}
+		res.status(200).send({
+			status: 'sucess',
+			data: { updatedTodo, message: 'Status updated sucessfully!' },
+		});
 	} catch (err) {
-		console.log(err);
-		res.status(400).send({
+		res.status(400).json({
 			error: { message: err.message },
 			status: 'failure',
 		});
 	}
 });
-
 router.patch('/todo/:id', authenticate, async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -149,7 +155,10 @@ router.patch('/todo/:id', authenticate, async (req, res) => {
 				error: { message: 'No todo found!' },
 			});
 		}
-		res.status(200).send({ status: 'sucess', data: todo });
+		res.status(200).send({
+			status: 'sucess',
+			data: { todo, message: 'Todo updated sucessfully!' },
+		});
 	} catch (err) {
 		res.status(400).json({
 			error: { message: err.message },
@@ -159,27 +168,30 @@ router.patch('/todo/:id', authenticate, async (req, res) => {
 });
 
 router.delete('/todo/:id', authenticate, async (req, res) => {
-	try {
-		const id = req.params.id;
+	setTimeout(async () => {
+		try {
+			console.log('Delete req');
+			const id = req.params.id;
 
-		const todo = await Todo.findOneAndDelete({
-			_id: id,
-			owner: req.user._id,
-		});
-		if (todo) {
-			res.status(200).send({
-				status: 'sucess',
-				data: { message: 'Todo has been removed!' },
+			const todo = await Todo.findOneAndDelete({
+				_id: id,
+				owner: req.user._id,
 			});
-		} else {
-			throw new Error('No todo found!');
+			if (todo) {
+				res.status(200).send({
+					status: 'sucess',
+					data: { message: 'Todo has been removed!' },
+				});
+			} else {
+				throw new Error('No todo found!');
+			}
+		} catch (err) {
+			res.status(400).json({
+				error: { message: err.message },
+				status: 'failure',
+			});
 		}
-	} catch (err) {
-		res.status(400).json({
-			error: { message: err.message },
-			status: 'failure',
-		});
-	}
+	}, 2000);
 });
 
 module.exports = router;

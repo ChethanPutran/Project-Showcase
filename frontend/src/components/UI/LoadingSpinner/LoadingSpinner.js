@@ -1,7 +1,8 @@
 import './LoadingSpinner.css';
 
 const LoadingSpinner = (props) => {
-	const classes = props.className ? `spinner ${props.className}` : 'spinner';
+	let classes = props.className ? `spinner ${props.className}` : 'spinner';
+	classes += ' ' + props.size;
 	return <div className={classes}></div>;
 };
 

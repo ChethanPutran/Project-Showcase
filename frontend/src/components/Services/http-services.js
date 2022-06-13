@@ -16,15 +16,12 @@ class HttpService {
 			throw err;
 		}
 	}
-	async updateTodoStatus({ id, completed }) {
+	async updateTodoStatus(id) {
 		try {
-			const response = await fetch(
-				`${DOMAIN_URL}/todo?id=${id}&&completed=${completed}`,
-				{
-					credentials: 'include',
-					method: 'PATCH',
-				}
-			);
+			const response = await fetch(`${DOMAIN_URL}/todo/status?id=${id}`, {
+				credentials: 'include',
+				method: 'PATCH',
+			});
 			const data = await response.json();
 			if (!response.ok) {
 				throw data.error;

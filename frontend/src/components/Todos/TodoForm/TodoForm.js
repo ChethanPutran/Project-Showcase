@@ -1,4 +1,3 @@
-import { Prompt } from 'react-router-dom';
 import { useState } from 'react';
 import { useReducer } from 'react';
 import Card from '../../UI/Card/Card';
@@ -6,6 +5,8 @@ import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
 import Button from '../../UI/Button/Button';
 import './TodoForm.css';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
+import React from 'react';
+import Prompt from '../../UI/Prompt/Prompt';
 
 const formErrorReducer = (state, action) => {
 	if (action.type === 'TITLE_INPUT') {
@@ -43,27 +44,19 @@ const formErrorReducer = (state, action) => {
 	};
 };
 
-export default function TodoForm(props) {
+function TodoForm(props) {
 	const initialVal = props.content || {
 		title: '',
 		description: '',
 		completed: false,
 	};
 	const [error, setError] = useState();
-	const [isEntereing, setIsEntering] = useState(false);
-
 	const [formState, dispatchFormInput] = useReducer(formErrorReducer, {
 		...initialVal,
 		isValidTitle: true,
 		isValidDescription: true,
 	});
 
-	const formFousedHandler = () => {
-		setIsEntering(true);
-	};
-	const finishLoading = () => {
-		setIsEntering(false);
-	};
 	const addTodoHandler = (event) => {
 		event.preventDefault();
 		const title = formState.title.trim();
@@ -115,6 +108,7 @@ export default function TodoForm(props) {
 			value: event.target.value,
 		});
 	};
+
 	return (
 		<>
 			{props.isLoading && (
@@ -123,108 +117,94 @@ export default function TodoForm(props) {
 				</div>
 			)}
 			<Prompt
-				when={isEntereing}
-				message={() =>
-					'Are you sure you want to leave? All your entered data will be lost!'
+				title={'Warning'}
+				message={
+					'Are you sure you want to exit? All provided data will be lost!'
 				}
 			/>
 
-			{error ? (
+			{error && (
 				<InfoModal
 					title={error.title}
 					message={error.message}
 					onConfirm={clearError}
 				/>
-			) : (
-				<div className='centered margin__top--l'>
-					<Card className='formCard'>
-						<form
-							onSubmit={addTodoHandler}
-							className='form'
-							onFocus={formFousedHandler}>
-							<label htmlFor='todoTitle' className='form__label'>
-								Title
+			)}
+			<Card className='formCard'>
+				<form onSubmit={addTodoHandler} className='form'>
+					<label htmlFor='todoTitle' className='form__label'>
+						Title
+					</label>
+					<input
+						type='text'
+						id='todoTitle'
+						className={`form__input ${
+							formState.isValidTitle === false ? 'inValid' : ''
+						}`}
+						value={formState.title}
+						autoComplete='off'
+						onChange={setTitleHandler}
+					/>
+					<label htmlFor='description' className='form__label'>
+						Description
+					</label>
+
+					<textarea
+						type='text'
+						id='description'
+						className={`form__input form__textarea ${
+							formState.isValidDescription === false
+								? 'inValid'
+								: ''
+						}`}
+						value={formState.description}
+						autoComplete='off'
+						onChange={setDescriptionHandler}
+					/>
+					<div className='form__radio--box'>
+						<span className='radio__title'>Completed?</span>
+
+						<div className='radio__box'>
+							<label
+								htmlFor='completed__true'
+								className='radio__label'>
+								True
 							</label>
 							<input
-								type='text'
-								id='todoTitle'
-								className={`form__input ${
-									formState.isValidTitle === false
-										? 'inValid'
-										: ''
-								}`}
-								value={formState.title}
-								autoComplete='off'
-								onChange={setTitleHandler}
+								type='radio'
+								id='completed__true'
+								name='completed'
+								className='form__radio'
+								onChange={setCompletedHandler}
+								value={true}
+								checked={!!formState.completed === true}
 							/>
+						</div>
+						<div className='radio__box'>
 							<label
-								htmlFor='description'
-								className='form__label'>
-								Description
+								htmlFor='completed__false'
+								className='radio__label'>
+								False
 							</label>
-
-							<textarea
-								type='text'
-								id='description'
-								className={`form__input form__textarea ${
-									formState.isValidDescription === false
-										? 'inValid'
-										: ''
-								}`}
-								value={formState.description}
-								autoComplete='off'
-								onChange={setDescriptionHandler}
+							<input
+								type='radio'
+								id='completed__false'
+								name='completed'
+								className='form__radio'
+								onChange={setCompletedHandler}
+								value={false}
+								checked={!!formState.completed === false}
 							/>
-							<div className='form__radio--box'>
-								<span className='radio__title'>Completed?</span>
-
-								<div className='radio__box'>
-									<label
-										htmlFor='completed__true'
-										className='radio__label'>
-										True
-									</label>
-									<input
-										type='radio'
-										id='completed__true'
-										name='completed'
-										className='form__radio'
-										onChange={setCompletedHandler}
-										value={true}
-										checked={formState.completed === 'true'}
-									/>
-								</div>
-								<div className='radio__box'>
-									<label
-										htmlFor='completed__false'
-										className='radio__label'>
-										False
-									</label>
-									<input
-										type='radio'
-										id='completed__false'
-										name='completed'
-										className='form__radio'
-										onChange={setCompletedHandler}
-										value={false}
-										checked={
-											formState.completed === 'false'
-										}
-									/>
-								</div>
-							</div>
-							<div className='form__btnBox'>
-								<Button
-									className='form__button'
-									type='submit'
-									onClick={finishLoading}>
-									{props.type}
-								</Button>
-							</div>
-						</form>
-					</Card>
-				</div>
-			)}
+						</div>
+					</div>
+					<div className='form__btnBox'>
+						<Button className='form__button' type='submit'>
+							{props.type}
+						</Button>
+					</div>
+				</form>
+			</Card>
 		</>
 	);
 }
+export default React.memo(TodoForm);

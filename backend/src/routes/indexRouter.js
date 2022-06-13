@@ -16,7 +16,7 @@ router.get('/logout', authenticate, async (req, res) => {
 		req.logout();
 		res.status(200).send({ data: 'sucess' });
 	} catch (err) {
-		res.status(500).send(err.message);
+		res.status(500).send({ error: { message: err.message } });
 	}
 });
 module.exports = router;
