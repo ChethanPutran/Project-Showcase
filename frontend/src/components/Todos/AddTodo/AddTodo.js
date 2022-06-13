@@ -5,6 +5,7 @@ import Aside from '../../UI/Aside/Aside';
 import { useDispatch } from 'react-redux';
 import { refresh_todos } from '../../../store/todo';
 import { useState } from 'react';
+import Button from '../../UI/Button/Button';
 
 const AddTodo = (props) => {
 	const [isloading, setIsLoading] = useState(false);
@@ -38,6 +39,11 @@ const AddTodo = (props) => {
 
 	return (
 		<Aside position={'left'} className={props.className}>
+			<Button className='btn-close' onClick={props.closeAddTodo}>
+				<ion-icon
+					name='close-outline'
+					className='close-icon'></ion-icon>
+			</Button>
 			{message.message && (
 				<Snackbar content={message.message} type={message.type} />
 			)}

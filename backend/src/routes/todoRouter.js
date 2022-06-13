@@ -135,36 +135,38 @@ router.patch('/todo/status', authenticate, async (req, res) => {
 	}
 });
 router.patch('/todo/:id', authenticate, async (req, res) => {
-	try {
-		const id = req.params.id;
-		const data = req.body;
+	setTimeout(async () => {
+		try {
+			const id = req.params.id;
+			const data = req.body;
 
-		if (!isValid(Todo.schema.obj, data)) {
-			throw new Error('Please provide a valid data');
-		}
-		const todo = await Todo.findOne({ _id: id, owner: req.user._id });
+			if (!isValid(Todo.schema.obj, data)) {
+				throw new Error('Please provide a valid data');
+			}
+			const todo = await Todo.findOne({ _id: id, owner: req.user._id });
 
-		Object.keys(data).forEach((key_) => {
-			todo[key_] = req.body[key_];
-		});
-		await todo.save();
+			Object.keys(data).forEach((key_) => {
+				todo[key_] = req.body[key_];
+			});
+			await todo.save();
 
-		if (!todo) {
-			return res.status(404).send({
+			if (!todo) {
+				return res.status(404).send({
+					status: 'failure',
+					error: { message: 'No todo found!' },
+				});
+			}
+			res.status(200).send({
+				status: 'sucess',
+				data: { todo, message: 'Todo updated sucessfully!' },
+			});
+		} catch (err) {
+			res.status(400).json({
+				error: { message: err.message },
 				status: 'failure',
-				error: { message: 'No todo found!' },
 			});
 		}
-		res.status(200).send({
-			status: 'sucess',
-			data: { todo, message: 'Todo updated sucessfully!' },
-		});
-	} catch (err) {
-		res.status(400).json({
-			error: { message: err.message },
-			status: 'failure',
-		});
-	}
+	}, 4000);
 });
 
 router.delete('/todo/:id', authenticate, async (req, res) => {

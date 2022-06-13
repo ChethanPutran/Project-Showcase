@@ -6,6 +6,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	top: 0;
+	left: 0;
 }
 
 .form {
@@ -14,6 +16,7 @@
 	margin: 0 auto;
 	font-size: 1.6rem;
 	margin-top: 4rem;
+	text-align: left;
 }
 
 .form__input {

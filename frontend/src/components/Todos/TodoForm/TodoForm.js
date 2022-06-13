@@ -168,7 +168,7 @@ function TodoForm(props) {
 							<label
 								htmlFor='completed__true'
 								className='radio__label'>
-								True
+								Yes
 							</label>
 							<input
 								type='radio'
@@ -177,14 +177,13 @@ function TodoForm(props) {
 								className='form__radio'
 								onChange={setCompletedHandler}
 								value={true}
-								checked={!!formState.completed === true}
 							/>
 						</div>
 						<div className='radio__box'>
 							<label
 								htmlFor='completed__false'
 								className='radio__label'>
-								False
+								No
 							</label>
 							<input
 								type='radio'
@@ -193,7 +192,6 @@ function TodoForm(props) {
 								className='form__radio'
 								onChange={setCompletedHandler}
 								value={false}
-								checked={!!formState.completed === false}
 							/>
 						</div>
 					</div>

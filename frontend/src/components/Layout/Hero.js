@@ -13,7 +13,7 @@ const Hero = (props) => {
 			<div className='hero'>
 				<div className='hero__decription'>
 					{user
-						? `Hello ${user.name},Welcome to Todo `
+						? `Hello ${user.name}, Welcome to Todo `
 						: 'Welcome to Todo'}
 				</div>
 				<div className='hero__btnBox centered'>

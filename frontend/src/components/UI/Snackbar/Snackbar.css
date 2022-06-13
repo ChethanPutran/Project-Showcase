@@ -26,6 +26,10 @@
 	color: red !important;
 }
 
+.error {
+	color: red !important;
+}
+
 @keyframes moveIn {
 	0% {
 		opacity: 0;

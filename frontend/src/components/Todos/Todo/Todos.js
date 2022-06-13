@@ -53,6 +53,7 @@ const Todos = (props) => {
 					description={todo.description}
 					completed={todo.completed}
 					createdAt={todo.createdAt}
+					onEditTodo={props.onEditTodo}
 				/>
 			</li>
 		));
@@ -69,6 +70,11 @@ const Todos = (props) => {
 	return (
 		<>
 			<Aside className={props.className} position={'right'}>
+				<Button className='btn-close' onClick={props.closeTodos}>
+					<ion-icon
+						name='close-outline'
+						className='close-icon'></ion-icon>
+				</Button>
 				{status === 'pending' && (
 					<div className='loading'>
 						<LoadingSpinner />
@@ -90,8 +96,8 @@ const Todos = (props) => {
 									className='sortButton'>
 									Sort
 									{sortType === 1
-										? 'Descending'
-										: 'Ascending'}
+										? ' Descending'
+										: ' Ascending'}
 								</Button>
 							</div>
 							<div className='todos__search'>

@@ -21,7 +21,7 @@ function App() {
 	const error = useSelector((state) => state.todo.error);
 	const message = useSelector((state) => state.todo.message);
 	const status = useSelector((state) => state.todo.status);
-
+	const [todo, setTodo] = useState(null);
 	const [isOpenTodo, setIsOpenTodo] = useState(false);
 	const [isOpenAddTodo, setIsOpenAddTodo] = useState(false);
 	const [isOpenEditTodo, setIsOpenEditTodo] = useState(false);
@@ -38,11 +38,25 @@ function App() {
 	const addTodoHandler = () => {
 		setIsOpenAddTodo((preState) => !preState);
 	};
+	const editTodoHandler = (data) => {
+		setTodo(data);
+		console.log(data);
+		setIsOpenEditTodo((preState) => !preState);
+	};
+	const closeEditModal = () => {
+		setIsOpenEditTodo(false);
+	};
+	const closeAddTodoModal = () => {
+		setIsOpenAddTodo(false);
+	};
 	const openLogin = () => {
 		setIsOpen(true);
 	};
 	const closeLogin = () => {
 		setIsOpen(false);
+	};
+	const todoCloseHandler = () => {
+		setIsOpenTodo(false);
 	};
 
 	if (status === 'pending') {
@@ -73,13 +87,22 @@ function App() {
 
 				{is_authenticated && (
 					<>
-						<Todos className={isOpenTodo ? 'show' : 'hide'} />
-
-						<AddTodo className={isOpenAddTodo ? 'show' : 'hide'} />
-
-						<EditTodo
-							className={isOpenEditTodo ? 'show' : 'hide'}
+						<Todos
+							className={isOpenTodo ? 'show' : 'hide'}
+							onEditTodo={editTodoHandler}
+							closeTodos={todoCloseHandler}
 						/>
+						<AddTodo
+							className={isOpenAddTodo ? 'show' : 'hide'}
+							closeAddTodo={closeAddTodoModal}
+						/>
+						{isOpenEditTodo && (
+							<EditTodo
+								className={isOpenEditTodo ? 'show' : 'hide'}
+								todo={todo}
+								closeModalHandler={closeEditModal}
+							/>
+						)}
 					</>
 				)}
 			</div>

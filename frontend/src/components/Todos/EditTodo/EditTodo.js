@@ -2,61 +2,69 @@ import TodoForm from '../TodoForm/TodoForm';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
-import { useSelector, useDispatch } from 'react-redux';
-import { refresh_todos, todoActions } from '../../../store/todo';
-import Aside from '../../UI/Aside/Aside';
+import { useDispatch } from 'react-redux';
+import { refresh_todos } from '../../../store/todo';
+import { useState } from 'react';
+import Modal from '../../UI/Modal/Modal';
 
 export default function EditTodo(props) {
 	const dispatch = useDispatch();
-	const status = useSelector((state) => state.todo.status);
-	const error = useSelector((state) => state.todo.error);
+	const [isloading, setIsLoading] = useState(false);
+	const [message, setMessage] = useState({ status: null, message: null });
 
 	const updateTodo = async (data, id) => {
+		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
-			await httpService.updateTodo({ id, content: data });
-			dispatch(todoActions.setStatus('sucess'));
-			dispatch(refresh_todos());
+			const res = await httpService.updateTodo({ id, content: data });
+
+			setMessage((pre) => {
+				return {
+					status: 'sucess',
+					message: res.data.message,
+				};
+			});
 		} catch (err) {
-			dispatch(todoActions.setStatus('failed'));
-			dispatch(todoActions.setError(error));
+			console.log(err);
+			setMessage((pre) => {
+				return { status: 'error', message: err.message };
+			});
 		}
+
+		setIsLoading(false);
+		setTimeout(() => {
+			props.closeModalHandler();
+		}, 2000);
+		setTimeout(() => {
+			dispatch(refresh_todos());
+		}, 2000);
 	};
-
-	const todo = {};
-	const searchParams = [];
-
-	for (const [key, value] of searchParams) {
-		todo[key] = value;
-	}
-
-	if (!todo.title || !todo.description) {
-	}
-
-	if (status === 'pending') {
-		return (
-			<div className='loading'>
-				<LoadingSpinner />
-			</div>
-		);
-	}
 
 	return (
 		<>
-			<Aside position={'bottom'} className={props.className}>
-				{error && <Snackbar content={error.message} />}
+			<Modal
+				className={props.className}
+				backdropHandler={props.closeModalHandler}>
+				{isloading && (
+					<div className='loading'>
+						<LoadingSpinner />
+					</div>
+				)}
+				{message.status && (
+					<Snackbar content={message.message} type={message.status} />
+				)}
 				<TodoForm
 					getData={updateTodo}
-					id={todo.id}
+					id={props.todo.id}
 					content={{
-						title: todo.title,
-						description: todo.description,
-						completed: !!todo.completed,
+						title: props.todo.title,
+						description: props.todo.description,
+						completed: !!props.todo.completed,
 					}}
-					isLoading={status === 'pending'}
+					isLoading={isloading}
 					type='Update Todo'
 				/>
-			</Aside>
+			</Modal>
 		</>
 	);
 }

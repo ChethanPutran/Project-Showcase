@@ -4,7 +4,6 @@ import './Todo.css';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
-import { useHistory } from 'react-router';
 import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
 
 import { useDispatch } from 'react-redux';
@@ -13,12 +12,12 @@ import { refresh_todos } from '../../../store/todo';
 const Todo = (props) => {
 	const dispatch = useDispatch();
 	const todo = {
+		id: props.id,
 		title: props.title,
 		description: props.description,
 		completed: props.completed,
 	};
 
-	const history = useHistory();
 	const [confirmation, setConfirmation] = useState(false);
 	const [message, setMessage] = useState({ type: null, message: null });
 	const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +48,6 @@ const Todo = (props) => {
 		}, 4000);
 	};
 	const updateTodoStatus = async (id) => {
-		console.log('update');
 		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
@@ -65,12 +63,9 @@ const Todo = (props) => {
 		}, 2000);
 	};
 
-	const editTodoHandler = (id) => {
-		const search = `?id=${id}&&completed=${todo.completed}&&title=${todo.title}&&description=${todo.description}`;
-		history.push({
-			pathname: '/edit',
-			search,
-		});
+	const editTodoHandler = () => {
+		console.log(todo);
+		props.onEditTodo(todo);
 	};
 
 	const deleteTodoHandler = () => {
@@ -147,7 +142,7 @@ const Todo = (props) => {
 						<Button
 							className='todo__btn btn__tirtiary'
 							title='Click to edit'
-							onClick={editTodoHandler.bind(null, props.id)}>
+							onClick={editTodoHandler}>
 							<i className='fas fa-edit btnIcon'></i>
 						</Button>
 						<Button

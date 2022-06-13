@@ -33,6 +33,7 @@
 .right {
     top: 10vh;
     right: 0;
+    text-align: left;
 }
 
 .hide.right {
@@ -42,6 +43,7 @@
 .left {
     top: 10vh;
     left: 0;
+    text-align: right;
 }
 
 .hide.bottom {
