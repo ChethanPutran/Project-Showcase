@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import Card from '../../UI/Card/Card';
 import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
 import Button from '../../UI/Button/Button';
-import './TodoForm.css';
+import './ProjectForm.css';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import React from 'react';
 import Prompt from '../../UI/Prompt/Prompt';
@@ -44,7 +44,7 @@ const formErrorReducer = (state, action) => {
 	};
 };
 
-function TodoForm(props) {
+function ProjectForm(props) {
 	const initialVal = props.content || {
 		title: '',
 		description: '',
@@ -57,7 +57,7 @@ function TodoForm(props) {
 		isValidDescription: true,
 	});
 
-	const addTodoHandler = (event) => {
+	const addProjectHandler = (event) => {
 		event.preventDefault();
 		const title = formState.title.trim();
 		const description = formState.description.trim();
@@ -71,7 +71,7 @@ function TodoForm(props) {
 		}
 		if (title.length < 4) {
 			setError({
-				title: 'Invalid todoTitle!',
+				title: 'Invalid projectTitle!',
 				message: 'Please enter a valid title.',
 			});
 			return;
@@ -131,13 +131,13 @@ function TodoForm(props) {
 				/>
 			)}
 			<Card className='formCard'>
-				<form onSubmit={addTodoHandler} className='form'>
-					<label htmlFor='todoTitle' className='form__label'>
+				<form onSubmit={addProjectHandler} className='form'>
+					<label htmlFor='projectTitle' className='form__label'>
 						Title
 					</label>
 					<input
 						type='text'
-						id='todoTitle'
+						id='projectTitle'
 						className={`form__input ${
 							formState.isValidTitle === false ? 'inValid' : ''
 						}`}
@@ -205,4 +205,4 @@ function TodoForm(props) {
 		</>
 	);
 }
-export default React.memo(TodoForm);
+export default React.memo(ProjectForm);

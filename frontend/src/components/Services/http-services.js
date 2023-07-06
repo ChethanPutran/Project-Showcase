@@ -1,9 +1,9 @@
 const DOMAIN_URL = 'http://localhost:3004/user';
 
 class HttpService {
-	async getTodos() {
+	async getProjects() {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todos`, {
+			const response = await fetch(`${DOMAIN_URL}/projects`, {
 				credentials: 'include',
 			});
 			const data = await response.json();
@@ -16,9 +16,9 @@ class HttpService {
 			throw err;
 		}
 	}
-	async updateTodoStatus(id) {
+	async updateProjectStatus(id) {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todo/status?id=${id}`, {
+			const response = await fetch(`${DOMAIN_URL}/project/status?id=${id}`, {
 				credentials: 'include',
 				method: 'PATCH',
 			});
@@ -32,11 +32,11 @@ class HttpService {
 			throw err;
 		}
 	}
-	async addTodo(todo) {
+	async addProject(project) {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todo/`, {
+			const response = await fetch(`${DOMAIN_URL}/project/`, {
 				method: 'POST',
-				body: JSON.stringify(todo),
+				body: JSON.stringify(project),
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -54,9 +54,9 @@ class HttpService {
 		}
 	}
 
-	async getTodo(todoId) {
+	async getProject(projectId) {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todo/${todoId}`, {
+			const response = await fetch(`${DOMAIN_URL}/project/${projectId}`, {
 				credentials: 'include',
 			});
 			const data = await response.json();
@@ -71,9 +71,9 @@ class HttpService {
 		}
 	}
 
-	async deleteTodo(todoID) {
+	async deleteProject(projectID) {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todo/${todoID}`, {
+			const response = await fetch(`${DOMAIN_URL}/project/${projectID}`, {
 				method: 'DELETE',
 				credentials: 'include',
 			});
@@ -89,9 +89,9 @@ class HttpService {
 		}
 	}
 
-	async updateTodo({ id, content }) {
+	async updateProject({ id, content }) {
 		try {
-			const response = await fetch(`${DOMAIN_URL}/todo/${id}`, {
+			const response = await fetch(`${DOMAIN_URL}/project/${id}`, {
 				method: 'PATCH',
 				body: JSON.stringify(content),
 				headers: {

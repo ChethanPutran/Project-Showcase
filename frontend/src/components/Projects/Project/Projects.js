@@ -1,59 +1,63 @@
-import Todo from './Todo';
+import Project from './Project';
 import Button from '../../UI/Button/Button';
 import React, { useState } from 'react';
-import './Todos.css';
+import './Projects.css';
 import Aside from '../../UI/Aside/Aside';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 
-const sortTodos = (todos, type) => {
-	return todos.slice().sort((todoA, todoB) => {
+const sortProjects = (projects, type) => {
+	console.log(projects);
+	return projects.slice().sort((projectA, projectB) => {
 		if (type) {
-			return todoA._id > todoB._id ? 1 : -1;
+			return projectA._id > projectB._id ? 1 : -1;
 		}
-		return todoA._id < todoB._id ? 1 : -1;
+		return projectA._id < projectB._id ? 1 : -1;
 	});
 };
-const Todos = (props) => {
-	const error = useSelector((state) => state.todo.error);
-	const size = useSelector((state) => state.todo.size);
-	const status = useSelector((state) => state.todo.status);
-	const message = useSelector((state) => state.todo.message);
+const Projects = (props) => {
+	const error = useSelector((state) => {
+		console.log("State :",state)
+		return state.project.error});
+	const size = useSelector((state) => state.project.size);
+	const status = useSelector((state) => state.project.status);
+	const message = useSelector((state) => state.project.message);
 
-	const todos_raw = useSelector((state) => state.todo.todos);
+	const projects_raw = useSelector((state) => state.project.projects);
 
 	const [sortType, setSortType] = useState(0);
-	const [todos, setTodos] = useState(todos_raw);
+	const [projects, setProjects] = useState(projects_raw);
 
 	useEffect(() => {
-		setTodos(todos_raw);
-	}, [todos_raw]);
-
-	const sortedTodos = sortTodos(todos, sortType);
+		setProjects(projects_raw);
+	}, [projects_raw]);
+	
+	console.log(projects);
+	const sortedProjects = sortProjects(projects, sortType);
 
 	const searchChangeHandler = (event) => {
 		const searchTerm = event.target.value.trim();
 		if (!searchTerm) {
-			setTodos(todos_raw);
+			setProjects(projects_raw);
 			return;
 		}
-		setTodos((preTodos) => {
-			return preTodos.filter((todo) => todo.title.includes(searchTerm));
+		setProjects((preProjects) => {
+			return preProjects.filter((project) => project.title.includes(searchTerm));
 		});
 	};
-	const todoList = () => {
+	const projectList = () => {
 		console.log('Refreshing!');
-		return sortedTodos.map((todo) => (
-			<li className='todos__list--item' key={todo._id} id={todo._id}>
-				<Todo
-					id={todo._id}
-					title={todo.title}
-					description={todo.description}
-					completed={todo.completed}
-					createdAt={todo.createdAt}
-					onEditTodo={props.onEditTodo}
+		return sortedProjects.map((project) => (
+			<li className='projects__list--item' key={project._id} id={project._id}>
+				<Project
+					id={project._id}
+					title={project.title}
+					description={project.description}
+					completed={project.completed}
+					createdAt={project.createdAt}
+					onEditProject={props.onEditProject}
 				/>
 			</li>
 		));
@@ -70,7 +74,7 @@ const Todos = (props) => {
 	return (
 		<>
 			<Aside className={props.className} position={'right'}>
-				<Button className='btn-close' onClick={props.closeTodos}>
+				<Button className='btn-close' onClick={props.closeProjects}>
 					<ion-icon
 						name='close-outline'
 						className='close-icon'></ion-icon>
@@ -88,8 +92,8 @@ const Todos = (props) => {
 				)}
 
 				{size > 0 ? (
-					<div className='todos__box'>
-						<div className='todos__filter'>
+					<div className='projects__box'>
+						<div className='projects__filter'>
 							<div>
 								<Button
 									onClick={sortHandler}
@@ -100,7 +104,7 @@ const Todos = (props) => {
 										: ' Ascending'}
 								</Button>
 							</div>
-							<div className='todos__search'>
+							<div className='projects__search'>
 								<label
 									htmlFor='search'
 									className='search__label'>
@@ -114,14 +118,14 @@ const Todos = (props) => {
 								/>
 							</div>
 						</div>
-						<ul className='todos__list'>{todoList()}</ul>
+						<ul className='projects__list'>{projectList()}</ul>
 					</div>
 				) : (
-					<p className='app__warning'>No todos found!!!</p>
+					<p className='app__warning'>No projects found!!!</p>
 				)}
 			</Aside>
 		</>
 	);
 };
 
-export default Todos;
+export default Projects;

@@ -1,14 +1,14 @@
 import './App.css';
 import Navigation from '../components/Navigation/Navigation';
-import AddTodo from '../components/Todos/AddTodo/AddTodo';
-import Todos from '../components/Todos/Todo/Todos';
+import AddProject from '../components/Projects/AddProject/AddProject';
+import Projects from '../components/Projects/Project/Projects';
 import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
-import EditTodo from '../components/Todos/EditTodo/EditTodo';
+import EditProject from '../components/Projects/EditProject/EditProject';
 import { check_auth } from '../store/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
-import { refresh_todos } from '../store/todo';
+import { refresh_projects } from '../store/project';
 import Snackbar from '../components/UI/Snackbar/Snackbar';
 import Hero from '../components/Layout/Hero';
 import Login from '../components/Login/Login';
@@ -18,36 +18,36 @@ function App() {
 	const is_authenticated = useSelector(
 		(state) => state.auth.is_authenticated
 	);
-	const error = useSelector((state) => state.todo.error);
-	const message = useSelector((state) => state.todo.message);
-	const status = useSelector((state) => state.todo.status);
-	const [todo, setTodo] = useState(null);
-	const [isOpenTodo, setIsOpenTodo] = useState(false);
-	const [isOpenAddTodo, setIsOpenAddTodo] = useState(false);
-	const [isOpenEditTodo, setIsOpenEditTodo] = useState(false);
+	const error = useSelector((state) => state.project.error);
+	const message = useSelector((state) => state.project.message);
+	const status = useSelector((state) => state.project.status);
+	const [project, setProject] = useState(null);
+	const [isOpenProject, setIsOpenProject] = useState(false);
+	const [isOpenAddProject, setIsOpenAddProject] = useState(false);
+	const [isOpenEditProject, setIsOpenEditProject] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
 		dispatch(check_auth());
-		dispatch(refresh_todos());
+		dispatch(refresh_projects());
 	}, [dispatch]);
 
-	const todoHandler = () => {
-		setIsOpenTodo((preState) => !preState);
+	const projectHandler = () => {
+		setIsOpenProject((preState) => !preState);
 	};
-	const addTodoHandler = () => {
-		setIsOpenAddTodo((preState) => !preState);
+	const addProjectHandler = () => {
+		setIsOpenAddProject((preState) => !preState);
 	};
-	const editTodoHandler = (data) => {
-		setTodo(data);
+	const editProjectHandler = (data) => {
+		setProject(data);
 		console.log(data);
-		setIsOpenEditTodo((preState) => !preState);
+		setIsOpenEditProject((preState) => !preState);
 	};
 	const closeEditModal = () => {
-		setIsOpenEditTodo(false);
+		setIsOpenEditProject(false);
 	};
-	const closeAddTodoModal = () => {
-		setIsOpenAddTodo(false);
+	const closeAddProjectModal = () => {
+		setIsOpenAddProject(false);
 	};
 	const openLogin = () => {
 		setIsOpen(true);
@@ -55,8 +55,8 @@ function App() {
 	const closeLogin = () => {
 		setIsOpen(false);
 	};
-	const todoCloseHandler = () => {
-		setIsOpenTodo(false);
+	const projectCloseHandler = () => {
+		setIsOpenProject(false);
 	};
 
 	if (status === 'pending') {
@@ -75,31 +75,31 @@ function App() {
 				{message && <Snackbar content={message} type={'sucess'} />}
 				<Navigation
 					is_authenticated={is_authenticated}
-					onClickTodos={todoHandler}
-					onClickAddTodo={addTodoHandler}
+					onClickProjects={projectHandler}
+					onClickAddProject={addProjectHandler}
 					onClickLogin={openLogin}
 				/>
 				{isOpen && <Login onClickBackdrop={closeLogin} />}
 				<Hero
-					onClickAddTodo={addTodoHandler}
+					onClickAddProject={addProjectHandler}
 					onClickLogin={openLogin}
 				/>
 
 				{is_authenticated && (
 					<>
-						<Todos
-							className={isOpenTodo ? 'show' : 'hide'}
-							onEditTodo={editTodoHandler}
-							closeTodos={todoCloseHandler}
+						<Projects
+							className={isOpenProject ? 'show' : 'hide'}
+							onEditProject={editProjectHandler}
+							closeProjects={projectCloseHandler}
 						/>
-						<AddTodo
-							className={isOpenAddTodo ? 'show' : 'hide'}
-							closeAddTodo={closeAddTodoModal}
+						<AddProject
+							className={isOpenAddProject ? 'show' : 'hide'}
+							closeAddProject={closeAddProjectModal}
 						/>
-						{isOpenEditTodo && (
-							<EditTodo
-								className={isOpenEditTodo ? 'show' : 'hide'}
-								todo={todo}
+						{isOpenEditProject && (
+							<EditProject
+								className={isOpenEditProject ? 'show' : 'hide'}
+								project={project}
 								closeModalHandler={closeEditModal}
 							/>
 						)}

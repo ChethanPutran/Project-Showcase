@@ -1,4 +1,4 @@
-# Getting Started with Todo App --By CHETHAN
+# Getting Started with ProfileShowCase App --By CHETHAN
 
 -->> Create google oauth credentials and use http://localhost:{PORT}:/users/auth/google/verify as callback url
 
@@ -8,7 +8,7 @@
 
 # PORT=3004
 
-# DB_URL="mongodb://localhost:27017/Todo"
+# DB_URL="mongodb://localhost:27017/Project"
 
 # SESSION_KEY={ANY STRING OF YOUR CHOICE}
 

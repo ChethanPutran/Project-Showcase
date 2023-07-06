@@ -3,7 +3,7 @@ const router = require('express').Router();
 const authenticate = require('../services/auth/authenticate');
 
 router.get('/', (req, res) => {
-	res.status(200).send({ data: 'Welcome to Todo' });
+	res.status(200).send({ data: 'Welcome to ProjectShowCase' });
 });
 
 router.get('/user', authenticate, (req, res) => {

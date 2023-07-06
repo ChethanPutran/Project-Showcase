@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const todoSchema = new mongoose.Schema(
+const projectSchema = new mongoose.Schema(
 	{
 		title: {
 			type: String,
@@ -32,5 +32,5 @@ const todoSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Todo = mongoose.model('Todo', todoSchema);
-module.exports = Todo;
+const Project = mongoose.model('Project', projectSchema);
+module.exports = Project;

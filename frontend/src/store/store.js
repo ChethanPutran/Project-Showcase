@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import auth_slice from './auth';
-import todo_slice from './todo';
+import project_slice from './project';
 
 //Creating reducer function
 //Input -> old state,dispatched action
@@ -8,7 +8,7 @@ import todo_slice from './todo';
 //Should not have side effects
 export const store = configureStore({
 	reducer: {
-		todo: todo_slice.reducer,
+		project: project_slice.reducer,
 		auth: auth_slice.reducer,
 	},
 });

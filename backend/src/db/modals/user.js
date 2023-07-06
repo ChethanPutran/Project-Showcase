@@ -30,9 +30,9 @@ const userSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-//Connecting User with todo
-userSchema.virtual('todos', {
-	ref: 'Todo',
+//Connecting User with project
+userSchema.virtual('projects', {
+	ref: 'Project',
 	localField: '_id',
 	foreignField: 'owner',
 });

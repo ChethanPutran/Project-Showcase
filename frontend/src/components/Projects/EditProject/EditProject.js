@@ -1,22 +1,22 @@
-import TodoForm from '../TodoForm/TodoForm';
+import ProjectForm from '../ProjectForm/ProjectForm';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import { useDispatch } from 'react-redux';
-import { refresh_todos } from '../../../store/todo';
+import { refresh_projects } from '../../../store/project';
 import { useState } from 'react';
 import Modal from '../../UI/Modal/Modal';
 
-export default function EditTodo(props) {
+export default function EditProject(props) {
 	const dispatch = useDispatch();
 	const [isloading, setIsLoading] = useState(false);
 	const [message, setMessage] = useState({ status: null, message: null });
 
-	const updateTodo = async (data, id) => {
+	const updateProject = async (data, id) => {
 		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
-			const res = await httpService.updateTodo({ id, content: data });
+			const res = await httpService.updateProject({ id, content: data });
 
 			setMessage((pre) => {
 				return {
@@ -36,7 +36,7 @@ export default function EditTodo(props) {
 			props.closeModalHandler();
 		}, 2000);
 		setTimeout(() => {
-			dispatch(refresh_todos());
+			dispatch(refresh_projects());
 		}, 2000);
 	};
 
@@ -53,16 +53,16 @@ export default function EditTodo(props) {
 				{message.status && (
 					<Snackbar content={message.message} type={message.status} />
 				)}
-				<TodoForm
-					getData={updateTodo}
-					id={props.todo.id}
+				<ProjectForm
+					getData={updateProject}
+					id={props.project.id}
 					content={{
-						title: props.todo.title,
-						description: props.todo.description,
-						completed: !!props.todo.completed,
+						title: props.project.title,
+						description: props.project.description,
+						completed: !!props.project.completed,
 					}}
 					isLoading={isloading}
-					type='Update Todo'
+					type='Update Project'
 				/>
 			</Modal>
 		</>

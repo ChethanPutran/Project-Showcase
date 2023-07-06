@@ -14,18 +14,18 @@ const Navigation = (props) => {
 		setShowMenu(true);
 	};
 	const dispatch = useDispatch();
-	const size = useSelector((state) => state.todo.size);
+	const size = useSelector((state) => state.project.size);
 	const logoutHandler = () => {
 		dispatch(logout());
 	};
 
-	const todoHandler = () => {
+	const projectHandler = () => {
 		closeMenu();
-		props.onClickTodos();
+		props.onClickProjects();
 	};
-	const addtodoHandler = () => {
+	const addprojectHandler = () => {
 		closeMenu();
-		props.onClickAddTodo();
+		props.onClickAddProject();
 	};
 	const loginHandler = () => {
 		closeMenu();
@@ -36,8 +36,8 @@ const Navigation = (props) => {
 		<>
 			<nav className='nav' ref={props.cartBtn}>
 				<h1 className='nav__logoName'>
-					<span className='letter-left'>To</span>
-					<span className='letter-right'>do</span>
+					<span className='letter-left'>Project</span>
+					<span className='letter-right'>Showcase</span>
 				</h1>
 				<ul className={showMenu ? 'nav__list show-meu' : 'nav__list'}>
 					{!props.is_authenticated && (
@@ -54,10 +54,10 @@ const Navigation = (props) => {
 							<li className='nav__item'>
 								<button
 									className='nav__link'
-									onClick={todoHandler}>
-									Todos
+									onClick={projectHandler}>
+									Projects
 									{size > 0 && (
-										<span className='nav__todoBtn__itemNum'>
+										<span className='nav__projectBtn__itemNum'>
 											{size}
 										</span>
 									)}
@@ -66,8 +66,8 @@ const Navigation = (props) => {
 							<li className='nav__item'>
 								<button
 									className='nav__link'
-									onClick={addtodoHandler}>
-									Add Todo
+									onClick={addprojectHandler}>
+									Add Project
 								</button>
 							</li>
 							<li className='nav__item'>

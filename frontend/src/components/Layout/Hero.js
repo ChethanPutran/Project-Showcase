@@ -2,8 +2,8 @@ import './Hero.css';
 import { useSelector } from 'react-redux';
 const Hero = (props) => {
 	const user = useSelector((state) => state.auth.user);
-	const addTodoHandler = () => {
-		props.onClickAddTodo();
+	const addProjectHandler = () => {
+		props.onClickAddProject();
 	};
 	const loginHandler = () => {
 		props.onClickLogin();
@@ -13,15 +13,15 @@ const Hero = (props) => {
 			<div className='hero'>
 				<div className='hero__decription'>
 					{user
-						? `Hello ${user.name}, Welcome to Todo `
-						: 'Welcome to Todo'}
+						? `Hello ${user.name}, Welcome to Project `
+						: 'Welcome to Project'}
 				</div>
 				<div className='hero__btnBox centered'>
 					{user ? (
 						<button
 							className='btn btn__primary hero__btn'
-							onClick={addTodoHandler}>
-							Add Todo
+							onClick={addProjectHandler}>
+							Add Project
 						</button>
 					) : (
 						<button

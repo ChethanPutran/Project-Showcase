@@ -11,7 +11,7 @@ const MongoStore = require('connect-mongo');
 
 const indexRouter = require('./routes/indexRouter');
 const userRouter = require('./routes/userRouter');
-const todoRouter = require('./routes/todoRouter');
+const projectRouter = require('./routes/projectRouter');
 
 const app = express();
 const port = process.env.PORT;
@@ -49,7 +49,7 @@ app.use(passport.session());
 
 app.use(indexRouter);
 app.use('/users', userRouter);
-app.use('/user', todoRouter);
+app.use('/user', projectRouter);
 
 app.listen(port, () => {
 	console.log(`Server is running at http://localhost:${port}`);

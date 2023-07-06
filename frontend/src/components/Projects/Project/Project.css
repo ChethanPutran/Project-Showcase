@@ -1,5 +1,5 @@
-/***************Todo********************/
-.todo {
+/***************Project********************/
+.project {
 	padding: 1rem 0;
 	border-bottom: 0.1rem solid rgb(133, 127, 127);
 	display: flex;
@@ -10,14 +10,14 @@
 	position: relative;
 }
 
-.todo__header {
+.project__header {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.todo__header--top {
+.project__header--top {
 	display: flex;
 	justify-content: space-between;
 }
@@ -63,20 +63,20 @@
 	border-color: rgb(255, 30, 0) transparent transparent transparent;
 }
 
-.todo__title {
+.project__title {
 	font-size: 1.6rem;
 	text-transform: capitalize;
 	margin-bottom: 0.7rem;
 	font-weight: 600;
 }
 
-.todo__date {
+.project__date {
 	font-size: 1rem;
 	text-align: end;
 	margin-left: 2rem;
 }
 
-.todo__description {
+.project__description {
 	font-size: 1.4rem;
 	font-family: sans-serif;
 	font-style: italic;
@@ -84,14 +84,14 @@
 	color: #8a2b06 !important;
 }
 
-.todo__status {
+.project__status {
 	font-size: 1.6rem;
 	color: #8a2b06;
 	display: inline-flex;
 	gap: 1rem;
 }
 
-.todo__btnBox {
+.project__btnBox {
 	margin-bottom: 1rem;
 	display: flex;
 	align-items: center;
@@ -99,12 +99,12 @@
 	width: 100%;
 }
 
-.todo__btn {
+.project__btn {
 	font-size: 1.4rem !important;
 	padding: 0.5rem 2rem;
 }
 
-.todo__btn:not(:last-of-type) {
+.project__btn:not(:last-of-type) {
 	margin-right: 1rem;
 }
 

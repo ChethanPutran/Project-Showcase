@@ -57,12 +57,12 @@
 	transition: all .5s ease;
 }
 
-.nav__todoBtn__content {
+.nav__projectBtn__content {
 	font-size: 2rem;
 	margin-right: 1rem;
 }
 
-.nav__todoBtn__itemNum {
+.nav__projectBtn__itemNum {
 	display: inline-block;
 	font-size: 1.2rem;
 	border-radius: 5px;

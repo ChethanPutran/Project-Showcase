@@ -1,23 +1,23 @@
-import TodoForm from '../TodoForm/TodoForm';
+import ProjectForm from '../ProjectForm/ProjectForm';
 import HttpService from '../../Services/http-services';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import Aside from '../../UI/Aside/Aside';
 import { useDispatch } from 'react-redux';
-import { refresh_todos } from '../../../store/todo';
+import { refresh_projects } from '../../../store/project';
 import { useState } from 'react';
 import Button from '../../UI/Button/Button';
 
-const AddTodo = (props) => {
+const AddProject = (props) => {
 	const [isloading, setIsLoading] = useState(false);
 	const [message, setMessage] = useState({ status: null, message: null });
 
 	const dispatch = useDispatch();
 
-	const addTodo = async (data) => {
+	const addProject = async (data) => {
 		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
-			const res = await httpService.addTodo(data);
+			const res = await httpService.addProject(data);
 			console.log(res);
 
 			setMessage((pre) => {
@@ -33,13 +33,13 @@ const AddTodo = (props) => {
 		}
 		setIsLoading(false);
 		setTimeout(() => {
-			dispatch(refresh_todos());
+			dispatch(refresh_projects());
 		}, 2000);
 	};
 
 	return (
 		<Aside position={'left'} className={props.className}>
-			<Button className='btn-close' onClick={props.closeAddTodo}>
+			<Button className='btn-close' onClick={props.closeAddProject}>
 				<ion-icon
 					name='close-outline'
 					className='close-icon'></ion-icon>
@@ -47,9 +47,9 @@ const AddTodo = (props) => {
 			{message.message && (
 				<Snackbar content={message.message} type={message.type} />
 			)}
-			<TodoForm getData={addTodo} isLoading={isloading} type='Add Todo' />
+			<ProjectForm getData={addProject} isLoading={isloading} type='Add Project' />
 		</Aside>
 	);
 };
 
-export default AddTodo;
+export default AddProject;

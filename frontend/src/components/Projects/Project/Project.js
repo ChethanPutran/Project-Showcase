@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import Button from '../../UI/Button/Button';
-import './Todo.css';
+import './Project.css';
 import LoadingSpinner from '../../UI/LoadingSpinner/LoadingSpinner';
 import Snackbar from '../../UI/Snackbar/Snackbar';
 import HttpService from '../../Services/http-services';
 import InfoModal from '../../UI/Modal/InfoModal/InfoModal';
 
 import { useDispatch } from 'react-redux';
-import { refresh_todos } from '../../../store/todo';
+import { refresh_projects } from '../../../store/project';
 
-const Todo = (props) => {
+const Project = (props) => {
 	const dispatch = useDispatch();
-	const todo = {
+	const project = {
 		id: props.id,
 		title: props.title,
 		description: props.description,
@@ -28,14 +28,14 @@ const Todo = (props) => {
 
 	const confirmDeleteHandler = () => {
 		clearConfirmation();
-		deleteTodo(props.id);
+		deleteProject(props.id);
 	};
 
-	const deleteTodo = async (id) => {
+	const deleteProject = async (id) => {
 		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
-			const res = await httpService.deleteTodo(id);
+			const res = await httpService.deleteProject(id);
 			console.log(res);
 			setMessage({ type: 'sucess', message: res.data.message });
 		} catch (err) {
@@ -44,14 +44,14 @@ const Todo = (props) => {
 		}
 		setIsLoading(false);
 		setTimeout(() => {
-			dispatch(refresh_todos());
+			dispatch(refresh_projects());
 		}, 4000);
 	};
-	const updateTodoStatus = async (id) => {
+	const updateProjectStatus = async (id) => {
 		setIsLoading(true);
 		const httpService = new HttpService();
 		try {
-			const res = await httpService.updateTodoStatus(id);
+			const res = await httpService.updateProjectStatus(id);
 			setMessage({ type: 'sucess', message: res.data.message });
 		} catch (err) {
 			console.log(err);
@@ -59,16 +59,16 @@ const Todo = (props) => {
 		}
 		setIsLoading(false);
 		setTimeout(() => {
-			dispatch(refresh_todos());
+			dispatch(refresh_projects());
 		}, 2000);
 	};
 
-	const editTodoHandler = () => {
-		console.log(todo);
-		props.onEditTodo(todo);
+	const editProjectHandler = () => {
+		console.log(project);
+		props.onEditProject(project);
 	};
 
-	const deleteTodoHandler = () => {
+	const deleteProjectHandler = () => {
 		setConfirmation(true);
 	};
 
@@ -86,7 +86,7 @@ const Todo = (props) => {
 			{confirmation && (
 				<InfoModal
 					title='Warning!'
-					message="Are you sure you want to delete todo?This can't be undone!"
+					message="Are you sure you want to delete project?This can't be undone!"
 					onConfirm={confirmDeleteHandler}
 					onUndo={clearConfirmation}
 				/>
@@ -95,19 +95,19 @@ const Todo = (props) => {
 			{message.message && (
 				<Snackbar content={message.message} type={message.type} />
 			)}
-			<div className='todo' title='Todo'>
+			<div className='project' title='Project'>
 				{isLoading && (
 					<div className='loading'>
 						<LoadingSpinner size={'small'} />
 					</div>
 				)}
 				{}
-				<header className='todo__header'>
-					<div className='todo__header--top'>
-						<h3 className='todo__title' title='Todo title'>
+				<header className='project__header'>
+					<div className='project__header--top'>
+						<h3 className='project__title' title='Project title'>
 							{props.title}
 						</h3>
-						<span className='todo__date'>{createdAt}</span>
+						<span className='project__date'>{createdAt}</span>
 					</div>
 
 					<p
@@ -121,34 +121,34 @@ const Todo = (props) => {
 					</p>
 				</header>
 				<main>
-					<p className='todo__description' title='Description'>
+					<p className='project__description' title='Description'>
 						{props.description}
 					</p>
 				</main>
-				<footer className='todo__btnBox'>
+				<footer className='project__btnBox'>
 					<div>
 						<Button
-							className='todo__btn'
+							className='project__btn'
 							title={
 								props.completed
 									? 'Click to activate'
 									: 'Click to finish'
 							}
-							onClick={updateTodoStatus.bind(null, props.id)}>
+							onClick={updateProjectStatus.bind(null, props.id)}>
 							{props.completed ? 'Activate' : 'Finish'}
 						</Button>
 					</div>
 					<div>
 						<Button
-							className='todo__btn btn__tirtiary'
+							className='project__btn btn__tirtiary'
 							title='Click to edit'
-							onClick={editTodoHandler}>
+							onClick={editProjectHandler}>
 							<i className='fas fa-edit btnIcon'></i>
 						</Button>
 						<Button
-							className='todo__btn btn__danger'
+							className='project__btn btn__danger'
 							title='Click to delete'
-							onClick={deleteTodoHandler}>
+							onClick={deleteProjectHandler}>
 							<i className='far fa-trash-alt btnIcon'></i>
 						</Button>
 					</div>
@@ -158,4 +158,4 @@ const Todo = (props) => {
 	);
 };
 
-export default Todo;
+export default Project;
