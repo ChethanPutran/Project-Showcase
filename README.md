@@ -16,10 +16,12 @@
 
 -->>Navigate to "backend" directory and run the following command to start backend-server
 > npm install
+
 > npm start or npm run dev
 
 -->>Navigate to "frontend" directory and run the following command to start frontend-server
 > npm install
+
 > npm start
 
 -->> Headover to http://localhost:3000 and login with your google account to enjoy the app
