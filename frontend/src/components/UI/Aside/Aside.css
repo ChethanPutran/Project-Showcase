@@ -58,3 +58,9 @@
 .hide.left {
     transform: translateX(-100%);
 }
+
+@media screen and (max-width:620px) {
+    .aside {
+        width: 100% !important;
+    }
+}

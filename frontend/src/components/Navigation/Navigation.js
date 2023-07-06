@@ -2,8 +2,17 @@ import './Navigation.css';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/auth';
+import { useState } from 'react';
 
 const Navigation = (props) => {
+	const [showMenu, setShowMenu] = useState(false);
+
+	const closeMenu = () => {
+		setShowMenu(false);
+	};
+	const openMenu = () => {
+		setShowMenu(true);
+	};
 	const dispatch = useDispatch();
 	const size = useSelector((state) => state.todo.size);
 	const logoutHandler = () => {
@@ -11,12 +20,15 @@ const Navigation = (props) => {
 	};
 
 	const todoHandler = () => {
+		closeMenu();
 		props.onClickTodos();
 	};
 	const addtodoHandler = () => {
+		closeMenu();
 		props.onClickAddTodo();
 	};
 	const loginHandler = () => {
+		closeMenu();
 		props.onClickLogin();
 	};
 
@@ -27,7 +39,7 @@ const Navigation = (props) => {
 					<span className='letter-left'>To</span>
 					<span className='letter-right'>do</span>
 				</h1>
-				<ul className='nav__list'>
+				<ul className={showMenu ? 'nav__list show-meu' : 'nav__list'}>
 					{!props.is_authenticated && (
 						<li className='nav__item'>
 							<button
@@ -68,6 +80,23 @@ const Navigation = (props) => {
 						</>
 					)}
 				</ul>
+
+				<button
+					className={
+						showMenu ? 'btn-open-menu hide-btn' : 'btn-open-menu'
+					}
+					onClick={openMenu}>
+					<ion-icon name='menu-outline' class='open-icon'></ion-icon>
+				</button>
+				<button
+					className={
+						showMenu ? 'btn-close-menu show-btn' : 'btn-close-menu'
+					}>
+					<ion-icon
+						name='close-outline'
+						class='close-icon'
+						onClick={closeMenu}></ion-icon>
+				</button>
 			</nav>
 		</>
 	);
